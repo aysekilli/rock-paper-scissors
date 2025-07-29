@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taş Kağıt Makas</title>
+    <link rel="stylesheet" href="./rock-paper-scissors.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="rps-div">
+      <h1 class="rps-title">Taş, Kağıt, Makas!</h1>
+      <p v-html="score" class="score">{{ score }}</p>
+
+      <div class="buttons-div">
+        <button class="rock-button" @click="playGame('rock')"> &#9994;  </button>
+        <button class="paper-button" @click="playGame('paper')">  &#9995;  </button>
+        <button class="scissors-button" @click="playGame('scissors')"> &#9996; </button>
+
+        <p v-html="message" id="result-text" class="result-class"> {{ message }} </p>
+      
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script setup>
+    const { createApp, ref } = Vue;
+    createApp({
+
+      setup(){
+        const myPoint = ref(0);
+        const comPoint = ref(0);
+        let score = ref(``)
+        const message = ref(` Seç ve oyna!`)
+
+        
+        // I want o create a random num each time.// paper beats rock
+        // rock beats scissors. // scissors beat paper
+
+        function playGame(item){
+        let randomNum = Math.random();
+        let pc_choice;
+      
+        if ((0.3333 >= randomNum) && (randomNum>= 0.0)){
+          pc_choice = 'rock'     }
+        else if ((0.6666 >= randomNum) && (randomNum>= 0.3334)){
+          pc_choice = 'paper';    }
+        else if ( randomNum >= 0.6667){
+          pc_choice = 'scissors';    }
+
+        if (item === pc_choice){
+          message.value = ` ${item} seçtiniz <br>berabere kaldınız `;      }
+          //tr-eng  seçenekleri ekleyebilirim.
+
+        else{
+          if (((item === 'rock')&&(pc_choice === 'paper')) ||
+          ((item === 'paper')&&(pc_choice === 'scissors')) ||
+          ((item === 'scissors')&&(pc_choice==='rock')))
+
+        {   message.value = ` PC ${pc_choice} seçti <br> Kaybettin :( `
+            comPoint.value += 1;
+        }
+
+        else
+        {   message.value = ` PC ${pc_choice} seçti.<br> Kazandın !! :) `;
+            myPoint.value += 1;
+        }  
+  
+      }
+      score.value = `(Sen) &#128034;   ${myPoint.value} |  ${comPoint.value}   &#128187; (PC)`;
+    }
+
+      return{
+        message,
+        playGame,
+        score
+      };
+    }
+  }).mount('#app')
+  </script>
+</body>
+</html>
